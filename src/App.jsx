@@ -1,59 +1,57 @@
-import { useRef, useEffect, useState } from "react";
+import { useState, useRef } from "react";
 import "./App.css";
-import Controller from "./component/Controller";
-import Viewer from "./component/Viewer";
-import Even from "./component/Even";
+import Header from "./component/Header";
+import TodoEditor from "./component/TodoEditor";
+import TodoList from "./component/TodoList";
+
+const mockTodo = [
+  {
+    id: 0,
+    isDone: false,
+    content: "React 공부하기",
+    createDate: new Date().getTime(),
+  },
+  {
+    id: 1,
+    isDone: false,
+    content: "빨래 널기",
+    createDate: new Date().getTime(),
+  },
+  {
+    id: 2,
+    isDone: false,
+    content: "노래 연습하기",
+    createDate: new Date().getTime(),
+  },
+];
 
 function App() {
-  const [count, setCount] = useState(0);
-  const [text, setText] = useState("");
-  const handleSetCount = (value) => {
-    setCount(count + value);
-  };
-  const handleChangeText = (e) => {
-    setText(e.target.value);
-  };
-  const didMountRef = useRef(false);
+  const [todo, setTodo] = useState(mockTodo);
+  const idRef = useRef(3);
 
-  /*-----------------------------------------------------------
-  useEffect(() => {
-    if (!didMountRef.current) {
-      didMountRef.current = true;
-      return;
-    } else {
-      console.log("컴포넌트 업데이트");
-    }
-  });
-
-  useEffect(() => {
-    console.log("컴포넌트 마운트");
-  }, []);
-
-  useEffect(() => {
-    const setIntervalID = setInterval(() => {
-      console.log("깜빡");
-    }, 1000);
-
-    return () => {
-      console.log("클린업");
-      clearInterval(setIntervalID);
+  const onCreate = (content) => {
+    const newItem = {
+      id: idRef.current,
+      content,
+      isDone: false,
+      createDate: new Date().getTime(),
     };
-  });
-------------------------------------------------------------------*/
+    setTodo([newItem, ...todo]);
+    idRef.current += 1;
+  };
+  const onUpdate = (targetId) => {
+    setTodo(
+      todo.map((it) =>
+        it.id === targetId ? { ...it, isDone: !it.isDone } : it,
+      ),
+    );
+  };
 
   return (
     <div className="App">
-      <h1>Simple Counter</h1>
-      <section>
-        <input value={text} onChange={handleChangeText} />
-      </section>
-      <section>
-        <Viewer count={count} />
-        {count % 2 === 0 && <Even />}
-      </section>
-      <section>
-        <Controller handleSetCount={handleSetCount} />
-      </section>
+      <Header />
+      <TodoEditor onCreate={onCreate} />
+      <TodoList todo={todo} onUpdate={onUpdate} />
     </div>
   );
 }
