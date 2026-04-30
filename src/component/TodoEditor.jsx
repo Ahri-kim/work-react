@@ -1,9 +1,9 @@
 import { useRef, useState } from "react";
 import "./TodoEditor.css";
-
 const TodoEditor = ({ onCreate }) => {
   const [content, setContent] = useState("");
   const inputRef = useRef();
+
   const onKeyDown = (e) => {
     if (e.keycode === 13) {
       onSubmit();
@@ -13,6 +13,7 @@ const TodoEditor = ({ onCreate }) => {
   const onChangeContent = (e) => {
     setContent(e.target.value);
   };
+
   const onSubmit = () => {
     if (!content) {
       inputRef.current.focus();
