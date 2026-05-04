@@ -20,7 +20,7 @@ function TestComp() {
     <div>
       <h4>테스트 컴포넌트</h4>
       <div>
-        <b>{count}</b>
+        <bold>{count}</bold>
       </div>
       <div>
         <button onClick={() => dispatch({ type: "INCREASE", data: 1 })}>
